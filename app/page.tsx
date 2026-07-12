@@ -1,3 +1,5 @@
+import ProfitCalculator from "@/components/ProfitCalculator";
+
 export default function Home() {
   return (
     <main className="min-h-screen p-8">
@@ -8,6 +10,8 @@ export default function Home() {
       <p className="mt-4 text-gray-600">
         Find profitable items to resell.
       </p>
+
+      <ProfitCalculator />
     </main>
   );
 }
