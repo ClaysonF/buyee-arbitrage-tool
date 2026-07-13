@@ -23,8 +23,21 @@ export async function POST(request: Request) {
       shippingCost: body.shippingCost,
       expectedSalePrice: body.expectedSalePrice,
       estimatedProfit: body.estimatedProfit,
+      roi: body.roi,
     },
   });
 
   return NextResponse.json(product);
+}
+
+export async function DELETE(request: Request) {
+  const { id } = await request.json();
+
+  await prisma.product.delete({
+    where: {
+      id,
+    },
+  });
+
+  return NextResponse.json({ success: true });
 }

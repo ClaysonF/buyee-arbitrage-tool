@@ -14,6 +14,15 @@ export default function ProfitCalculator() {
     Number(buyPrice) -
     Number(shipping);
 
+  const roi =
+    buyPrice && Number(buyPrice) + Number(shipping) > 0
+    ? (
+        (profit /
+          (Number(buyPrice) + Number(shipping))) *
+        100
+      ).toFixed(1)
+    : "0";
+
   async function saveProduct() {
   if (!title.trim()) {
     alert("Title is required");
@@ -37,6 +46,7 @@ export default function ProfitCalculator() {
       shippingCost: Number(shipping),
       expectedSalePrice: Number(salePrice),
       estimatedProfit: profit,
+      roi: Number(roi),
     }),
   });
 

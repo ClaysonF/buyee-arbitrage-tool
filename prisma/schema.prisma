@@ -15,5 +15,6 @@ model Product {
   shippingCost      Float
   expectedSalePrice Float
   estimatedProfit   Float
+  roi               Float
   createdAt         DateTime @default(now())
 }
