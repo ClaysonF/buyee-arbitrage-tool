@@ -3,6 +3,8 @@
 import { useState } from "react";
 
 export default function ProfitCalculator() {
+  const [title, setTitle] = useState("");
+  const [buyeeUrl, setBuyeeUrl] = useState("");
   const [buyPrice, setBuyPrice] = useState("");
   const [shipping, setShipping] = useState("");
   const [salePrice, setSalePrice] = useState("");
@@ -12,8 +14,45 @@ export default function ProfitCalculator() {
     Number(buyPrice) -
     Number(shipping);
 
+  async function saveProduct() {
+  const response = await fetch("/api/products", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title,
+      buyeeUrl,
+      buyPrice: Number(buyPrice),
+      shippingCost: Number(shipping),
+      expectedSalePrice: Number(salePrice),
+      estimatedProfit: profit,
+    }),
+  });
+
+  if (!response.ok) {
+    alert("Failed to save product");
+    return;
+  }
+
+  alert("Product saved!");
+}
+
   return (
     <div className="mt-8 max-w-md space-y-4">
+      <input
+      className="border p-2 w-full"
+      placeholder="Product title"
+      value={title}
+      onChange={(e) => setTitle(e.target.value)}
+      />
+
+      <input
+        className="border p-2 w-full"
+        placeholder="Buyee URL"
+        value={buyeeUrl}
+        onChange={(e) => setBuyeeUrl(e.target.value)}
+      />
       <input
         className="border p-2 w-full"
         placeholder="Buyee price"
@@ -38,6 +77,12 @@ export default function ProfitCalculator() {
       <div className="text-xl font-bold">
         Estimated Profit: ${profit || 0}
       </div>
+      
+      <button
+        onClick={saveProduct}
+        className="bg-black text-white px-4 py-2 rounded">
+        Save Product
+      </button>
     </div>
   );
 }
