@@ -15,6 +15,16 @@ export default function ProfitCalculator() {
     Number(shipping);
 
   async function saveProduct() {
+  if (!title.trim()) {
+    alert("Title is required");
+    return;
+  }
+
+  if (!buyPrice || !salePrice) {
+    alert("Enter prices");
+    return;
+  }
+
   const response = await fetch("/api/products", {
     method: "POST",
     headers: {
@@ -36,6 +46,12 @@ export default function ProfitCalculator() {
   }
 
   alert("Product saved!");
+
+  setTitle("");
+  setBuyeeUrl("");
+  setBuyPrice("");
+  setShipping("");
+  setSalePrice("");
 }
 
   return (
@@ -77,7 +93,7 @@ export default function ProfitCalculator() {
       <div className="text-xl font-bold">
         Estimated Profit: ${profit || 0}
       </div>
-      
+
       <button
         onClick={saveProduct}
         className="bg-black text-white px-4 py-2 rounded">

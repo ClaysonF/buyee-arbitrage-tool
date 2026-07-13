@@ -1,4 +1,5 @@
 import ProfitCalculator from "@/components/ProfitCalculator";
+import ProductList from "../components/ProductList";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       </p>
 
       <ProfitCalculator />
+      <ProductList />
     </main>
   );
 }
