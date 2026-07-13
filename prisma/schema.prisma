@@ -18,3 +18,12 @@ model Product {
   roi               Float
   createdAt         DateTime @default(now())
 }
+
+model Listing {
+  id        Int      @id @default(autoincrement())
+  title     String
+  price     Float
+  url       String   @unique
+  source    String
+  createdAt DateTime @default(now())
+}
