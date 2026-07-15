@@ -1,5 +1,7 @@
 import ProfitCalculator from "@/components/ProfitCalculator";
-import ProductList from "../components/ProductList";
+import ProductList from "@/components/ProductList";
+import MercariImporter from "@/components/MercariImporter";
+import ListingList from "@/components/ListingList";
 
 export default function Home() {
   return (
@@ -11,6 +13,9 @@ export default function Home() {
       <p className="mt-4 text-gray-600">
         Find profitable items to resell.
       </p>
+
+      <MercariImporter />
+      <ListingList />
 
       <ProfitCalculator />
       <ProductList />

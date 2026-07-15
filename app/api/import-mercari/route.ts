@@ -51,7 +51,13 @@ export async function POST(request: Request) {
           .map((line) => line.trim())
           .filter(Boolean);
 
-        const title = lines[0];
+        const title =
+          lines.find(
+            (line) =>
+              !line.includes("Authentication") &&
+              !line.includes("YEN") &&
+              !line.includes("US$")
+          ) ?? "Unknown Title";
 
         const priceLine =
           lines.find((line) =>
@@ -74,6 +80,19 @@ export async function POST(request: Request) {
 
     console.log("FIRST PARSED LISTING:");
     console.log(listings[0]);
+
+    const badListing = listings.find(
+      (listing) =>
+        listing.title.includes("Authentication")
+    );
+
+    const badLink = mercariLinks.find(
+      (listing) =>
+        listing.text?.includes("Authentication")
+    );
+
+    console.log("BAD RAW LINK:");
+    console.log(badLink);
 
     for (const listing of listings) {
       await prisma.listing.upsert({
