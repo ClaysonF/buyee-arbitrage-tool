@@ -99,12 +99,15 @@ export async function POST(request: Request) {
         where: {
           url: listing.url,
         },
-        update: {},
+        update: {
+          keyword,
+        },
         create: {
           title: listing.title,
           price: listing.price,
           url: listing.url,
           source: "Mercari",
+          keyword,
         },
       });
     }

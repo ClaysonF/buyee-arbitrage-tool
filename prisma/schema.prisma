@@ -25,5 +25,6 @@ model Listing {
   price     Float
   url       String   @unique
   source    String
+  keyword   String?
   createdAt DateTime @default(now())
 }
