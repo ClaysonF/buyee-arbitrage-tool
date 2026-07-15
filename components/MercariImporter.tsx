@@ -29,6 +29,8 @@ export default function MercariImporter() {
     setLoading(false);
 
     alert(`Imported ${data.imported} listings`);
+
+    window.location.reload();
   }
 
   return (
