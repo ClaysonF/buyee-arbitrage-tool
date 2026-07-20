@@ -43,13 +43,37 @@ export default function ListingList() {
               ¥{listing.price.toLocaleString()}
             </div>
 
-            <a
-              href={listing.url}
-              target="_blank"
-              className="text-blue-500"
-            >
-              View Listing
-            </a>
+            <div className="mt-2 flex gap-4">
+              <a
+                href={listing.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500"
+              >
+                View Listing
+              </a>
+
+              <a
+                href={`https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(
+                  listing.title
+                )}&LH_Sold=1&LH_Complete=1`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-green-600"
+              >
+                View eBay Sold
+              </a>
+              <a
+                href={`https://translate.google.com/?sl=ja&tl=en&text=${encodeURIComponent(
+                  listing.title
+                )}&op=translate`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-purple-600"
+              >
+                Translate Title
+              </a>
+            </div>
           </div>
         ))}
       </div>
