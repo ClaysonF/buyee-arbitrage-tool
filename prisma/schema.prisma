@@ -24,7 +24,8 @@ model Listing {
   title     String
   price     Float
   url       String   @unique
+  imageUrl  String?
   source    String
-  keyword   String?
+  keyword   String
   createdAt DateTime @default(now())
 }

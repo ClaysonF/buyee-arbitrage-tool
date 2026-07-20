@@ -7,6 +7,7 @@ type Listing = {
   title: string;
   price: number;
   url: string;
+  imageUrl: string;
 };
 
 export default function ListingList() {
@@ -35,6 +36,13 @@ export default function ListingList() {
             key={listing.id}
             className="border p-3 rounded"
           >
+            {listing.imageUrl !== "" && (
+              <img
+                src={listing.imageUrl}
+                alt={listing.title}
+                className="w-32 h-32 object-cover rounded mb-3"
+              />
+            )}
             <div className="font-semibold">
               {listing.title}
             </div>

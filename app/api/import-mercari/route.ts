@@ -26,73 +26,49 @@ export async function POST(request: Request) {
 
     await page.waitForTimeout(5000);
 
-    const links = await page
-      .locator("a")
-      .evaluateAll((elements) =>
-        elements.map((element) => ({
-          text: element.textContent?.trim(),
-          href: element.getAttribute("href"),
-        }))
+    const listings = await page
+      .locator("a[href*='/mercari/item/']")
+      .evaluateAll((cards) =>
+        cards.slice(0, 20).map((card) => {
+          const title =
+            card.querySelector("h2.name")?.textContent?.trim() ??
+            "Unknown Title";
+
+          const priceText =
+            card.querySelector("p.price")?.textContent ?? "0";
+
+          const price = Number(
+            priceText
+              .replace("YEN", "")
+              .replace(/,/g, "")
+              .trim()
+          );
+
+          const href =
+            card.getAttribute("href") ?? "";
+
+          const img = card.querySelector("img");
+
+          const image =
+            img?.getAttribute("src") ||
+            img?.getAttribute("data-src") ||
+            img?.getAttribute("data-original") ||
+            img?.getAttribute("data-lazy-src") ||
+            "";
+
+          return {
+            title,
+            price,
+            url: `https://buyee.jp${href}`,
+            imageUrl: image.startsWith("//")
+              ? `https:${image}`
+              : image,
+          };
+        })
       );
-
-    const mercariLinks = links.filter(
-      (link) =>
-        link.href &&
-        link.href.includes("/mercari/item/")
-    );
-
-    const listings = mercariLinks
-      .slice(0, 20)
-      .map((listing) => {
-        const text = listing.text ?? "";
-
-        const lines = text
-          .split("\n")
-          .map((line) => line.trim())
-          .filter(Boolean);
-
-        const title =
-          lines.find(
-            (line) =>
-              !line.includes("Authentication") &&
-              !line.includes("YEN") &&
-              !line.includes("US$")
-          ) ?? "Unknown Title";
-
-        const priceLine =
-          lines.find((line) =>
-            line.includes("YEN")
-          ) ?? "0";
-
-        const price = Number(
-          priceLine
-            .replace("YEN", "")
-            .replace(/,/g, "")
-            .trim()
-        );
-
-        return {
-          title,
-          price,
-          url: `https://buyee.jp${listing.href}`,
-        };
-      });
 
     console.log("FIRST PARSED LISTING:");
     console.log(listings[0]);
-
-    const badListing = listings.find(
-      (listing) =>
-        listing.title.includes("Authentication")
-    );
-
-    const badLink = mercariLinks.find(
-      (listing) =>
-        listing.text?.includes("Authentication")
-    );
-
-    console.log("BAD RAW LINK:");
-    console.log(badLink);
 
     for (const listing of listings) {
       await prisma.listing.upsert({
@@ -100,12 +76,17 @@ export async function POST(request: Request) {
           url: listing.url,
         },
         update: {
+          title: listing.title,
+          price: listing.price,
+          imageUrl: listing.imageUrl,
+          source: "Mercari",
           keyword,
         },
         create: {
           title: listing.title,
           price: listing.price,
           url: listing.url,
+          imageUrl: listing.imageUrl,
           source: "Mercari",
           keyword,
         },
