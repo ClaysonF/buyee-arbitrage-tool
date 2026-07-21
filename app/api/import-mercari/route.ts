@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     const searchUrl =
       `https://buyee.jp/mercari/search?keyword=${encodeURIComponent(
         keyword
-      )}&status=on_sale`;
+      )}&translationType=99&status=on_sale`;
 
     await page.goto(searchUrl, {
       waitUntil: "domcontentloaded",
