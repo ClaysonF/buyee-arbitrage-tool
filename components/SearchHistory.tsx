@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 type SearchSession = {
   id: number;
   keyword: string;
@@ -12,27 +10,16 @@ type SearchSession = {
 };
 
 type Props = {
+  sessions: SearchSession[];
   selectedSearchId: number | null;
   onSelect: (id: number | null) => void;
 };
 
 export default function SearchHistory({
+  sessions,
   selectedSearchId,
   onSelect,
 }: Props) {
-  const [sessions, setSessions] = useState<SearchSession[]>([]);
-
-  useEffect(() => {
-    async function loadSessions() {
-      const response = await fetch("/api/search-sessions");
-      const data = await response.json();
-
-      setSessions(data);
-    }
-
-    loadSessions();
-  }, []);
-
   return (
     <div className="border rounded p-4 w-72">
       <h2 className="text-xl font-bold mb-4">
@@ -49,7 +36,7 @@ export default function SearchHistory({
           }`}
         >
           <div className="font-semibold">
-            ⭐ All Listings
+            All Listings
           </div>
         </button>
 

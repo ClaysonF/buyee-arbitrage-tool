@@ -27,6 +27,12 @@ export default function ListingList({
           : `/api/listings?searchId=${selectedSearchId}`;
 
       const response = await fetch(url);
+
+      if (!response.ok) {
+        console.error("Failed to load listings");
+        return;
+      }
+
       const data = await response.json();
 
       setListings(data);
