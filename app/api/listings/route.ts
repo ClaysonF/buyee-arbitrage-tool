@@ -1,8 +1,16 @@
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const searchId = request.nextUrl.searchParams.get("searchId");
+
   const listings = await prisma.listing.findMany({
+    where: searchId
+      ? {
+          searchId: Number(searchId),
+        }
+      : undefined,
+
     orderBy: {
       createdAt: "desc",
     },
