@@ -19,6 +19,15 @@ model Product {
   createdAt         DateTime @default(now())
 }
 
+model SearchSession {
+  id           Int       @id @default(autoincrement())
+  keyword      String
+  createdAt    DateTime  @default(now())
+  lastImported DateTime  @updatedAt
+
+  listings     Listing[]
+}
+
 model Listing {
   id        Int      @id @default(autoincrement())
   title     String
@@ -26,6 +35,11 @@ model Listing {
   url       String   @unique
   imageUrl  String?
   source    String
+
   keyword   String
+
+  searchId  Int?
+  search    SearchSession? @relation(fields: [searchId], references: [id])
+
   createdAt DateTime @default(now())
 }

@@ -7,6 +7,12 @@ export async function POST(request: Request) {
 
   const keyword = body.keyword;
 
+  const searchSession = await prisma.searchSession.create({
+  data: {
+      keyword,
+    },
+  });
+
   const browser = await chromium.launch({
     headless: false,
   });
@@ -81,6 +87,7 @@ export async function POST(request: Request) {
           imageUrl: listing.imageUrl,
           source: "Mercari",
           keyword,
+          searchId: searchSession.id,
         },
         create: {
           title: listing.title,
@@ -89,6 +96,7 @@ export async function POST(request: Request) {
           imageUrl: listing.imageUrl,
           source: "Mercari",
           keyword,
+          searchId: searchSession.id,
         },
       });
     }
